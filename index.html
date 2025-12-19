@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin Cascade System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background stars container -->
+    <div class="stars-container" id="stars"></div>
+
+    <!-- Main title -->
+    <div class="title">DIGITAL TWIN CASCADE</div>
+
+    <!-- Canvas for drawing connections -->
+    <canvas id="connectionCanvas"></canvas>
+
+    <!-- Virtual Twins (VT) -->
+    <div class="vt-container">
+        <div class="vt" id="vt-supply" data-vt="supply">
+            <img src="../gen7/Virtual twin supply.png" alt="Supply Chain VT">
+            <div class="vt-label">Supply Chain<br>Digital Twin</div>
+            <div class="vt-status"></div>
+        </div>
+
+        <div class="vt" id="vt-product" data-vt="product">
+            <img src="../gen7/Virtual twin product.png" alt="Product VT">
+            <div class="vt-label">Product<br>Digital Twin</div>
+            <div class="vt-status"></div>
+        </div>
+
+        <div class="vt" id="vt-production" data-vt="production">
+            <img src="../gen7/Virtual twin of prodcution system.png" alt="Production VT">
+            <div class="vt-label">Production<br>Systems</div>
+            <div class="vt-status"></div>
+        </div>
+    </div>
+
+    <!-- Event buttons -->
+    <div class="event-buttons">
+        <button class="event-btn" id="btn-tarif" data-event="tarif">
+            🚨 Increase of Tariffs +25%
+        </button>
+        <button class="event-btn" id="btn-labor" data-event="labor">
+            🚨 Labor Shortage Crisis
+        </button>
+        <button class="event-btn" id="btn-material" data-event="material">
+            🚨 Material Change Required
+        </button>
+    </div>
+
+    <!-- Message popup -->
+    <div class="message-popup" id="messagePopup">
+        <div class="message-header">
+            <span class="message-icon"></span>
+            <span class="message-title"></span>
+        </div>
+        <div class="message-content"></div>
+        <div class="auto-progress-indicator" id="autoProgressIndicator">
+            <div class="progress-text">Auto-progressing in <span id="countdown">5</span>s</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        <button class="message-btn" id="resolveBtn">Resolve with Digital Twin ✓</button>
+    </div>
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-content">
+            <div class="success-icon">🎯</div>
+            <h2>Crisis Resolved!</h2>
+            <p class="success-message"></p>
+            <button class="success-btn" id="resetBtn">New Scenario</button>
+        </div>
+    </div>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
