@@ -418,13 +418,12 @@ function showResolutionLocal() {
         // 6 seconds to read solution (4s × 1.5)
         startAutoProgress(6000, completeAction);
     } else {
-        const continueAction = () => {
+        const continueAction = async () => {
             stopAutoProgress();
             popup.classList.remove('show');
-            setTimeout(() => {
-                currentStep++;
-                triggerStep();
-            }, 500);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            currentStep++;
+            await triggerStep();
         };
         btn.onclick = continueAction;
         // 6 seconds to read solution (4s × 1.5)
@@ -637,8 +636,9 @@ function handleSessionUpdate(payload) {
     const newData = payload.new;
     console.log('Session updated:', newData);
 
-    // If we're not the controller, sync our state
-    if (!isController || newData.controller_id !== window.USER_ID) {
+    // Only sync if we're NOT the controller
+    // (Spectators sync everything, controllers don't sync their own updates)
+    if (!isController) {
         syncFromSession(newData);
     }
 }
