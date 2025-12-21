@@ -3,7 +3,13 @@
     "allow": [
       "Bash(python:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: VT Cascade real-time demonstration\n\n- Interactive digital twin crisis scenarios \\(tariff, labor, material\\)\n- Supabase Realtime multi-user synchronization\n- Controller/spectator pattern with race condition prevention\n- Automatic progression with visual indicators\n- Canvas-based animated cascade visualizations\n- Complete documentation and setup guides\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh --version:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
