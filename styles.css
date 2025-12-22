@@ -193,19 +193,19 @@ body {
 }
 
 /* VT Positioning */
-#vt-supply {
+#vt-product {
     top: 50%;
     left: 10%;
     transform: translate(0, -50%);
 }
 
-#vt-product {
+#vt-production {
     top: 15%;
     left: 50%;
     transform: translate(-50%, 0);
 }
 
-#vt-production {
+#vt-supply {
     top: 50%;
     right: 10%;
     transform: translate(0, -50%);
