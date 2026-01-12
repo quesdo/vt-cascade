@@ -127,9 +127,7 @@ function resizeCanvas() {
 function initEventListeners() {
     // Event buttons - removed, now controlled via controller.html
     // Scenarios are started via Supabase sync from controller
-
-    // Reset button
-    document.getElementById('resetBtn').addEventListener('click', resetSystem);
+    // Reset button - removed, system auto-resets after completion
 
     // VT click handlers
     document.querySelectorAll('.vt').forEach(vt => {
@@ -180,7 +178,7 @@ async function handleSecondClick(vtId, vtElement) {
     const isLastStep = currentStep >= currentScenario.chain.length - 1;
 
     if (isLastStep) {
-        // Update Supabase if controller
+        // Notify spectators via Supabase
         if (isController) {
             await updateSession({ state: 'success' });
         }
@@ -188,10 +186,11 @@ async function handleSecondClick(vtId, vtElement) {
         // Execute locally
         handleSecondClickLocal(vtId, vtElement);
 
-        // Show success screen
+        // Reset system automatically after last step
         setTimeout(async () => {
-            await showSuccessScreen();
-        }, 500);
+            await releaseControl();
+            resetSystemLocal();
+        }, 1000);
     } else {
         // Update Supabase if controller - notify circle will disappear
         if (isController) {
@@ -402,9 +401,6 @@ async function resetSystem() {
 }
 
 function resetSystemLocal() {
-    // Hide success overlay
-    document.getElementById('successOverlay').classList.remove('show');
-
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -582,7 +578,10 @@ function syncFromSession(data) {
             break;
 
         case 'success':
-            showSuccessScreenSync();
+            // Auto-reset for spectators after last step
+            setTimeout(() => {
+                resetSystemLocal();
+            }, 1000);
             break;
     }
 }
