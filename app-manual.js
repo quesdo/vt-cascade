@@ -186,6 +186,11 @@ async function handleSecondClick(vtId, vtElement) {
         // Execute locally
         handleSecondClickLocal(vtId, vtElement);
 
+        // SDK: Hide "Web Cascade" and show "Web Univers" when scenario completes
+        toggleVisibility("Web Cascade", false);
+        toggleVisibility("Web Univers", true);
+        console.log("Scenario complete - Web Cascade hidden, Web Univers displayed");
+
         // Reset system automatically after last step
         setTimeout(async () => {
             await releaseControl();
@@ -417,11 +422,9 @@ function resetSystemLocal() {
         toggleVisibility(workingActor, true); // Show Working
     });
 
-    // SDK: Reset Web Cascade and Web Univers visibility
-    toggleVisibility("Web Cascade", true);   // Show Web Cascade again
-    toggleVisibility("Web Univers", false);  // Hide Web Univers
+    // Note: We keep Web Univers displayed after completion, don't reset it
 
-    console.log("System reset - all VTs back to Working state, Web Cascade visible");
+    console.log("System reset - all VTs back to Working state, Web Univers remains visible");
 
     // Reset state
     currentScenario = null;
@@ -578,6 +581,11 @@ function syncFromSession(data) {
             break;
 
         case 'success':
+            // SDK: Hide "Web Cascade" and show "Web Univers" when scenario completes
+            toggleVisibility("Web Cascade", false);
+            toggleVisibility("Web Univers", true);
+            console.log("Scenario complete (spectator) - Web Cascade hidden, Web Univers displayed");
+
             // Auto-reset for spectators after last step
             setTimeout(() => {
                 resetSystemLocal();
