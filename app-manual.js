@@ -191,11 +191,8 @@ async function handleSecondClick(vtId, vtElement) {
         toggleVisibility("Web Univers", true);
         console.log("Scenario complete - Web Cascade hidden, Web Univers displayed");
 
-        // Reset system automatically after last step
-        setTimeout(async () => {
-            await releaseControl();
-            resetSystemLocal();
-        }, 1000);
+        // Release control but don't reset - stay on Web Univers
+        await releaseControl();
     } else {
         // Update Supabase if controller - notify circle will disappear
         if (isController) {
@@ -422,9 +419,11 @@ function resetSystemLocal() {
         toggleVisibility(workingActor, true); // Show Working
     });
 
-    // Note: We keep Web Univers displayed after completion, don't reset it
+    // SDK: Reset Web Cascade and Web Univers visibility for new scenario
+    toggleVisibility("Web Cascade", true);   // Show Web Cascade again
+    toggleVisibility("Web Univers", false);  // Hide Web Univers
 
-    console.log("System reset - all VTs back to Working state, Web Univers remains visible");
+    console.log("System reset - all VTs back to Working state, Web Cascade visible");
 
     // Reset state
     currentScenario = null;
@@ -585,11 +584,7 @@ function syncFromSession(data) {
             toggleVisibility("Web Cascade", false);
             toggleVisibility("Web Univers", true);
             console.log("Scenario complete (spectator) - Web Cascade hidden, Web Univers displayed");
-
-            // Auto-reset for spectators after last step
-            setTimeout(() => {
-                resetSystemLocal();
-            }, 1000);
+            // No auto-reset - stay on Web Univers
             break;
     }
 }
