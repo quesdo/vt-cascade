@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin Cascade System - Manual Mode</title>
+    <link rel="stylesheet" href="styles-manual.css">
+</head>
+<body>
+    <!-- Background stars container -->
+    <div class="stars-container" id="stars"></div>
+
+    <!-- Main title -->
+    <div class="title">DIGITAL TWIN - MANUAL MODE</div>
+
+    <!-- Canvas for drawing connections -->
+    <canvas id="connectionCanvas"></canvas>
+
+    <!-- Virtual Twins (VT) -->
+    <div class="vt-container">
+        <div class="vt" id="vt-product" data-vt="product">
+            <img src="Product VT.png" alt="Product VT">
+            <div class="vt-label">Product<br>Digital Twin</div>
+            <div class="vt-status"></div>
+        </div>
+
+        <div class="vt" id="vt-production" data-vt="production">
+            <img src="Production systems VT.png" alt="Production VT">
+            <div class="vt-label">Production Systems<br>Digital Twin</div>
+            <div class="vt-status"></div>
+        </div>
+
+        <div class="vt" id="vt-supply" data-vt="supply">
+            <img src="Supply VT.png" alt="Supply Chain VT">
+            <div class="vt-label">Supply Chain<br>Digital Twin</div>
+            <div class="vt-status"></div>
+        </div>
+    </div>
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-content">
+            <div class="success-icon">🎯</div>
+            <h2>Crisis Resolved!</h2>
+            <p class="success-message"></p>
+            <button class="success-btn" id="resetBtn">New Scenario</button>
+        </div>
+    </div>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app-manual.js"></script>
+</body>
+</html>

@@ -26,3 +26,9 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Supabase credentials (keep private!)
+supabase-config.js
+
+# Claude Code local settings
+.claude/settings.local.json

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller - Digital Twin Cascade</title>
+    <link rel="stylesheet" href="controller.css">
+</head>
+<body>
+    <!-- Title -->
+    <div class="controller-title">Unpredictable World</div>
+
+    <!-- Status indicator -->
+    <div class="status-indicator" id="statusIndicator">
+        <div class="status-dot"></div>
+        <span class="status-text">Waiting for connection...</span>
+    </div>
+
+    <!-- Event buttons -->
+    <div class="controller-buttons">
+        <button class="control-btn" id="btn-tarif" data-event="tarif">
+            <span class="btn-icon">🚨</span>
+            <span class="btn-title">Increase of Tariffs</span>
+            <span class="btn-subtitle">+25% on US components</span>
+        </button>
+
+        <button class="control-btn" id="btn-labor" data-event="labor">
+            <span class="btn-icon">🚨</span>
+            <span class="btn-title">Labor Shortage Crisis</span>
+            <span class="btn-subtitle">-30% workforce capacity</span>
+        </button>
+
+        <button class="control-btn" id="btn-material" data-event="material">
+            <span class="btn-icon">🚨</span>
+            <span class="btn-title">Material Change Required</span>
+            <span class="btn-subtitle">Key material discontinued</span>
+        </button>
+    </div>
+
+    <!-- Reset button -->
+    <div class="reset-container">
+        <button class="reset-btn" id="resetBtn">
+            <span>↻</span> Reset System
+        </button>
+    </div>
+
+    <!-- Info panel -->
+    <div class="info-panel">
+        <h3>Instructions</h3>
+        <ol>
+            <li>Click one of the crisis buttons above</li>
+            <li>Watch the cascade on the main screen</li>
+            <li>Click the Digital Twins to progress</li>
+            <li>Use Reset to start a new scenario</li>
+        </ol>
+    </div>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="controller.js"></script>
+</body>
+</html>

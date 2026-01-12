@@ -1,0 +1,403 @@
+/* ===== RESET & BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 18px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #1a4d6b 0%, #0d2a3d 60%, #001a2e 100%);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Responsive font sizing */
+@media screen and (min-width: 1920px) {
+    :root { font-size: 22px; }
+}
+
+@media screen and (max-width: 1366px) {
+    :root { font-size: 16px; }
+}
+
+@media screen and (max-width: 1024px) {
+    :root { font-size: 14px; }
+}
+
+/* ===== STARS BACKGROUND ===== */
+.stars-container {
+    display: none; /* Hidden - solid background only */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ===== TITLE ===== */
+.title {
+    display: none; /* Hidden in manual mode */
+    position: fixed;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.125rem;
+    text-shadow: 0 0 30px rgba(77, 166, 255, 0.8),
+                 0 0 60px rgba(77, 166, 255, 0.4);
+    z-index: 100;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 20px rgba(77, 166, 255, 0.6); }
+    to { text-shadow: 0 0 40px rgba(77, 166, 255, 1), 0 0 80px rgba(77, 166, 255, 0.6); }
+}
+
+/* ===== CANVAS FOR CONNECTIONS ===== */
+#connectionCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* ===== VIRTUAL TWINS ===== */
+.vt-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.vt {
+    position: absolute;
+    width: 16vw;
+    height: 16vw;
+    min-width: 170px;
+    min-height: 170px;
+    max-width: 350px;
+    max-height: 350px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.vt img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0.25rem 1.25rem rgba(77, 166, 255, 0.3));
+    transition: all 0.3s ease;
+}
+
+.vt:hover img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0.5rem 1.875rem rgba(77, 166, 255, 0.6));
+}
+
+/* Red circle around image when problem detected */
+.vt.has-problem::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    border: 10px solid #ff4444;
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255, 68, 68, 0.9),
+                inset 0 0 40px rgba(255, 68, 68, 0.4);
+    animation: redPulse 1.5s infinite ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes redPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.85;
+    }
+}
+
+/* Green circle around image when resolved */
+.vt.resolved::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    border: 10px solid #2e7d32;
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(46, 125, 50, 0.9),
+                inset 0 0 40px rgba(46, 125, 50, 0.4);
+    animation: greenGlow 1s ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes greenGlow {
+    0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Clickable VT state - makes it more obvious to click */
+.vt.clickable {
+    animation: clickablePulse 1.5s infinite ease-in-out;
+}
+
+.vt.clickable img {
+    filter: drop-shadow(0 0.5rem 2rem rgba(255, 68, 68, 0.8));
+}
+
+@keyframes clickablePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+.vt-label {
+    display: none; /* Hidden in manual mode */
+    position: absolute;
+    bottom: -2.5rem;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.8);
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.vt-status {
+    display: none !important; /* Hidden in manual mode - using circle instead */
+    position: absolute;
+    top: -0.625rem;
+    right: -0.625rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* VT Positioning */
+#vt-product {
+    top: 50%;
+    left: 10%;
+    transform: translate(0, -50%);
+}
+
+#vt-production {
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#vt-supply {
+    top: 50%;
+    right: 10%;
+    transform: translate(0, -50%);
+}
+
+/* ===== EVENT BUTTONS ===== */
+.event-buttons {
+    position: fixed;
+    bottom: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.25rem;
+    z-index: 20;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90vw;
+}
+
+.event-btn {
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0.25rem 0.75rem rgba(211, 47, 47, 0.4);
+    transition: all 0.3s ease;
+    min-width: 12rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.event-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.event-btn:hover::before {
+    left: 100%;
+}
+
+.event-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(211, 47, 47, 0.6);
+}
+
+.event-btn:active {
+    transform: translateY(0);
+}
+
+.event-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ===== SUCCESS OVERLAY ===== */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.5s ease;
+}
+
+.success-overlay.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.success-content {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    border-radius: 1.25rem;
+    padding: 3.125rem;
+    text-align: center;
+    box-shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    max-width: 90vw;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(6.25rem); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.success-icon {
+    font-size: 5.5rem;
+    margin-bottom: 1.25rem;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.625rem); }
+}
+
+.success-content h2 {
+    font-size: 2.75rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    font-size: 1.45rem;
+    color: #e8f5e9;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.success-btn {
+    background: white;
+    color: #2e7d32;
+    border: none;
+    border-radius: 0.625rem;
+    padding: 1.15rem 2.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.success-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.3);
+}
