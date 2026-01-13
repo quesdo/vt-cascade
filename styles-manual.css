@@ -271,6 +271,8 @@ body {
 }
 
 #vt-product .vt-title {
+    bottom: -3.5rem;
+    left: 78%;
     transform: translateX(-50%) rotate(-35deg);
 }
 
@@ -299,6 +301,8 @@ body {
 }
 
 #vt-supply .vt-title {
+    bottom: -3.5rem;
+    left: 22%;
     transform: translateX(-50%) rotate(35deg);
 }
 
