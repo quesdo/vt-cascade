@@ -12,7 +12,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
-    background: url('infini.png') center center / cover no-repeat fixed;
+    background: radial-gradient(circle at center, #1a4d6b 0%, #0d2a3d 60%, #001a2e 100%);
     min-height: 100vh;
     position: relative;
 }
@@ -258,10 +258,20 @@ body {
 }
 
 /* VT Positioning */
+/* Position originale, images et titres orientés vers le centre-bas */
+
 #vt-product {
     top: 50%;
     left: 10%;
     transform: translate(0, -50%);
+}
+
+#vt-product img {
+    transform: rotate(-35deg);
+}
+
+#vt-product .vt-title {
+    transform: translateX(-50%) rotate(-35deg);
 }
 
 #vt-production {
@@ -270,10 +280,26 @@ body {
     transform: translate(-50%, 0);
 }
 
+#vt-production img {
+    transform: rotate(0deg);
+}
+
+#vt-production .vt-title {
+    transform: translateX(-50%) rotate(0deg);
+}
+
 #vt-supply {
     top: 50%;
     right: 10%;
     transform: translate(0, -50%);
+}
+
+#vt-supply img {
+    transform: rotate(35deg);
+}
+
+#vt-supply .vt-title {
+    transform: translateX(-50%) rotate(35deg);
 }
 
 /* ===== EVENT BUTTONS ===== */
