@@ -468,10 +468,8 @@ async function initSupabase() {
 
 // ===== SUPABASE SYNC FUNCTIONS =====
 async function updateSession(updates) {
-    if (!isController) {
-        console.log('Not controller - cannot update session');
-        return;
-    }
+    // Allow anyone to update session (for click progression)
+    console.log('Updating session:', updates);
 
     const { error } = await supabaseClient
         .from('cascade_session')
@@ -480,6 +478,8 @@ async function updateSession(updates) {
 
     if (error) {
         console.error('Error updating session:', error);
+    } else {
+        console.log('Session updated successfully');
     }
 }
 
