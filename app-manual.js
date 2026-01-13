@@ -223,11 +223,11 @@ async function handleSecondClick(vtId, vtElement) {
 }
 
 function handleSecondClickLocal(vtId, vtElement) {
-    // Remove green circle
+    // Keep green circle visible, just reset click count
     clickCount = 0;
-    vtElement.classList.remove('resolved');
+    // Don't remove 'resolved' class - keep the green circle
 
-    console.log(`Click 2: ${vtId} proceeding to next step`);
+    console.log(`Click 2: ${vtId} proceeding to next step - keeping green circle`);
 }
 
 function handleVTClick(vtId, vtElement) {
