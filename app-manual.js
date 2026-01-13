@@ -140,11 +140,15 @@ function initEventListeners() {
 
 // ===== VT CLICK HANDLING =====
 async function handleFirstClick(vtId, vtElement) {
+    console.log('handleFirstClick called:', { vtId, currentStep, clickCount });
+
     // Update Supabase - anyone can update when they click
     await updateSession({
         state: 'circle_resolved',
         current_step: currentStep
     });
+
+    console.log('Supabase updated with circle_resolved');
 
     // Execute locally
     handleFirstClickLocal(vtId, vtElement);
@@ -564,11 +568,13 @@ function syncFromSession(data) {
 
         case 'circle_resolved':
             // Sync the green circle state
+            console.log('Received circle_resolved for step:', data.current_step, 'current step:', currentStep);
             syncCircleResolved(data.current_step);
             break;
 
         case 'circle_removed':
             // Sync the circle removal (second click)
+            console.log('Received circle_removed for step:', data.current_step, 'current step:', currentStep);
             syncCircleRemoved(data.current_step);
             break;
 
@@ -584,12 +590,22 @@ function syncFromSession(data) {
 
 function syncCircleResolved(step) {
     // Find the VT for this step
+    console.log('syncCircleResolved called:', {
+        step: step,
+        currentStep: currentStep,
+        hasScenario: !!currentScenario,
+        scenarioName: currentScenario?.name
+    });
+
     if (!currentScenario || currentStep !== step) {
+        console.log('syncCircleResolved: condition not met, returning');
         return;
     }
 
     const vtType = currentScenario.chain[currentStep].vt;
     const vtElement = document.getElementById(`vt-${vtType}`);
+
+    console.log('syncCircleResolved: applying to VT:', vtType);
 
     if (vtElement) {
         handleFirstClickLocal(vtType, vtElement);
