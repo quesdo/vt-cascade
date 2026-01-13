@@ -534,13 +534,11 @@ async function releaseControl() {
 
 function handleSessionUpdate(payload) {
     const newData = payload.new;
-    console.log('Session updated:', newData);
+    console.log('🔔 handleSessionUpdate called:', newData);
+    console.log('🔔 isController:', isController, 'USER_ID:', window.USER_ID);
 
-    // Only sync if we're NOT the controller
-    // (Spectators sync everything, controllers don't sync their own updates)
-    if (!isController) {
-        syncFromSession(newData);
-    }
+    // Everyone should sync (removed isController check to ensure all updates are received)
+    syncFromSession(newData);
 }
 
 function syncFromSession(data) {
