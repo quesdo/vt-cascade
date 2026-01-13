@@ -140,13 +140,11 @@ function initEventListeners() {
 
 // ===== VT CLICK HANDLING =====
 async function handleFirstClick(vtId, vtElement) {
-    // Update Supabase if controller
-    if (isController) {
-        await updateSession({
-            state: 'circle_resolved',
-            current_step: currentStep
-        });
-    }
+    // Update Supabase - anyone can update when they click
+    await updateSession({
+        state: 'circle_resolved',
+        current_step: currentStep
+    });
 
     // Execute locally
     handleFirstClickLocal(vtId, vtElement);
@@ -178,10 +176,8 @@ async function handleSecondClick(vtId, vtElement) {
     const isLastStep = currentStep >= currentScenario.chain.length - 1;
 
     if (isLastStep) {
-        // Notify spectators via Supabase
-        if (isController) {
-            await updateSession({ state: 'success' });
-        }
+        // Notify spectators via Supabase - anyone can update
+        await updateSession({ state: 'success' });
 
         // Execute locally
         handleSecondClickLocal(vtId, vtElement);
@@ -194,13 +190,11 @@ async function handleSecondClick(vtId, vtElement) {
         // Release control but don't reset - stay on Web Univers
         await releaseControl();
     } else {
-        // Update Supabase if controller - notify circle will disappear
-        if (isController) {
-            await updateSession({
-                state: 'circle_removed',
-                current_step: currentStep
-            });
-        }
+        // Update Supabase - anyone can update when they click
+        await updateSession({
+            state: 'circle_removed',
+            current_step: currentStep
+        });
 
         // Execute locally
         handleSecondClickLocal(vtId, vtElement);
@@ -209,15 +203,14 @@ async function handleSecondClick(vtId, vtElement) {
         setTimeout(async () => {
             currentStep++;
 
-            // Update Supabase if controller
-            if (isController) {
-                await updateSession({
-                    current_step: currentStep,
-                    state: 'showing_impact'
-                });
-            }
+            // Update Supabase with next step
+            await updateSession({
+                current_step: currentStep,
+                state: 'showing_impact'
+            });
 
-            await triggerStep();
+            // Trigger step locally only (Supabase already updated)
+            triggerStepLocal();
         }, 500);
     }
 }
