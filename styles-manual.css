@@ -206,7 +206,7 @@ body {
 /* New title style - visible under images */
 .vt-title {
     position: absolute;
-    bottom: -3rem;
+    bottom: -4rem;
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.5rem;
@@ -214,8 +214,9 @@ body {
     color: #ffffff;
     text-align: center;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    white-space: nowrap;
+    white-space: normal;
     letter-spacing: 0.05em;
+    line-height: 1.4;
     z-index: 10;
 }
 
