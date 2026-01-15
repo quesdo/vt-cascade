@@ -59,8 +59,48 @@ function initEventListeners() {
         });
     });
 
+    // Solution buttons
+    document.querySelectorAll('.sol-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const solution = e.currentTarget.dataset.solution;
+            toggleSolutionVisibility(solution);
+        });
+    });
+
     // Reset button
     document.getElementById('resetBtn').addEventListener('click', resetSystem);
+}
+
+// ===== SOLUTION VISIBILITY CONTROL =====
+function toggleSolutionVisibility(solutionName) {
+    console.log(`Toggling visibility for: ${solutionName}`);
+
+    // Send message to SDK to toggle visibility
+    window.parent.postMessage(JSON.stringify({
+        action: "toggleVisibility",
+        actor: solutionName,
+        visible: true
+    }), "*");
+
+    console.log(`Visibility toggled for ${solutionName}`);
+
+    // Play animation 3 seconds after showing the solution
+    const animationName = solutionName.replace('SOL', 'ANIM');
+    setTimeout(() => {
+        playAnimation(solutionName, animationName);
+    }, 3000);
+}
+
+function playAnimation(actorName, animationName) {
+    console.log(`Playing animation ${animationName} on ${actorName}`);
+
+    window.parent.postMessage(JSON.stringify({
+        action: "playAnimation",
+        actor: actorName,
+        animation: animationName
+    }), "*");
+
+    console.log(`Animation ${animationName} triggered`);
 }
 
 // ===== SCENARIO CONTROL =====
