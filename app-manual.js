@@ -186,10 +186,11 @@ async function handleSecondClick(vtId, vtElement) {
         // Execute locally
         handleSecondClickLocal(vtId, vtElement);
 
-        // SDK: Hide "Web Cascade" and show "Web Univers" when scenario completes
-        toggleVisibility("Web Cascade", false);
+        // SDK: Hide "Web Cascade 4" and "Pupitre" when scenario completes
+        toggleVisibility("Web Cascade 4", false);
+        toggleVisibility("Pupitre", false);
         toggleVisibility("Web Univers", true);
-        console.log("Scenario complete - Web Cascade hidden, Web Univers displayed");
+        console.log("Scenario complete - Web Cascade 4 and Pupitre hidden, Web Univers displayed");
 
         // Release control but don't reset - stay on Web Univers
         await releaseControl();
@@ -381,10 +382,11 @@ function showSuccessScreenLocal() {
 
     overlay.classList.add('show');
 
-    // SDK: Hide "Web Cascade" and show "Web Univers" when success screen appears
-    toggleVisibility("Web Cascade", false);
+    // SDK: Hide "Web Cascade 4" and "Pupitre" when success screen appears
+    toggleVisibility("Web Cascade 4", false);
+    toggleVisibility("Pupitre", false);
     toggleVisibility("Web Univers", true);
-    console.log("Success screen shown - Web Cascade hidden, Web Univers displayed");
+    console.log("Success screen shown - Web Cascade 4 and Pupitre hidden, Web Univers displayed");
 }
 
 // For spectators to sync
@@ -416,11 +418,12 @@ function resetSystemLocal() {
         toggleVisibility(workingActor, true); // Show Working
     });
 
-    // SDK: Reset Web Cascade and Web Univers visibility for new scenario
-    toggleVisibility("Web Cascade", true);   // Show Web Cascade again
-    toggleVisibility("Web Univers", false);  // Hide Web Univers
+    // SDK: Reset Web Cascade 4, Pupitre and Web Univers visibility for new scenario
+    toggleVisibility("Web Cascade 4", true);   // Show Web Cascade 4 again
+    toggleVisibility("Pupitre", true);         // Show Pupitre again
+    toggleVisibility("Web Univers", false);    // Hide Web Univers
 
-    console.log("System reset - all VTs back to Working state, Web Cascade visible");
+    console.log("System reset - all VTs back to Working state, Web Cascade 4 and Pupitre visible");
 
     // Reset state
     currentScenario = null;
@@ -577,10 +580,11 @@ function syncFromSession(data) {
             break;
 
         case 'success':
-            // SDK: Hide "Web Cascade" and show "Web Univers" when scenario completes
-            toggleVisibility("Web Cascade", false);
+            // SDK: Hide "Web Cascade 4" and "Pupitre" when scenario completes
+            toggleVisibility("Web Cascade 4", false);
+            toggleVisibility("Pupitre", false);
             toggleVisibility("Web Univers", true);
-            console.log("Scenario complete (spectator) - Web Cascade hidden, Web Univers displayed");
+            console.log("Scenario complete (spectator) - Web Cascade 4 and Pupitre hidden, Web Univers displayed");
             // No auto-reset - stay on Web Univers
             break;
     }
