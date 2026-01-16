@@ -84,11 +84,27 @@ function toggleSolutionVisibility(solutionName) {
 
     console.log(`Visibility toggled for ${solutionName}`);
 
-    // Play animation 3 seconds after showing the solution
-    const animationName = solutionName.replace('SOL', 'ANIM');
-    setTimeout(() => {
-        playAnimation(solutionName, animationName);
-    }, 3000);
+    // Special handling for SOL2 (Product) - play ROT animation first, then ANIM after 3s
+    if (solutionName === 'SOL2') {
+        // Choose random ROT animation (ROT1, ROT2, or ROT3)
+        const rotNumber = Math.floor(Math.random() * 3) + 1;
+        const rotAnimationName = `ROT${rotNumber}`;
+
+        console.log(`Playing rotation animation ${rotAnimationName} on ${solutionName}`);
+        playAnimation(solutionName, rotAnimationName);
+
+        // Wait 3 seconds, then play the normal ANIM animation
+        const animationName = solutionName.replace('SOL', 'ANIM');
+        setTimeout(() => {
+            playAnimation(solutionName, animationName);
+        }, 3000);
+    } else {
+        // For other solutions, play animation 3 seconds after showing
+        const animationName = solutionName.replace('SOL', 'ANIM');
+        setTimeout(() => {
+            playAnimation(solutionName, animationName);
+        }, 3000);
+    }
 }
 
 function playAnimation(actorName, animationName) {
