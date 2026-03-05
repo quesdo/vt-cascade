@@ -3,6 +3,7 @@ let supabaseClient = null;
 let realtimeChannel = null;
 let isController = false;
 let sessionId = null;
+let isLocalSOLAction = false;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -79,10 +80,9 @@ function initEventListeners() {
 }
 
 // ===== SOLUTION VISIBILITY CONTROL =====
-function toggleSolutionVisibility(solutionName) {
+function executeSOLLocally(solutionName) {
     console.log(`Toggling visibility for: ${solutionName}`);
 
-    // Send message to SDK to toggle visibility
     window.parent.postMessage(JSON.stringify({
         action: "toggleVisibility",
         actor: solutionName,
@@ -91,26 +91,39 @@ function toggleSolutionVisibility(solutionName) {
 
     console.log(`Visibility toggled for ${solutionName}`);
 
-    // Special handling for SOL2 (Product) - play ROT animation first, then ANIM after 3s
     if (solutionName === 'SOL2') {
-        // Choose random ROT animation (ROT1, ROT2, or ROT3)
         const rotNumber = Math.floor(Math.random() * 3) + 1;
         const rotAnimationName = `ROT${rotNumber}`;
-
         console.log(`Playing rotation animation ${rotAnimationName} on ${solutionName}`);
         playAnimation(solutionName, rotAnimationName);
-
-        // Wait 3 seconds, then play the normal ANIM animation
         const animationName = solutionName.replace('SOL', 'ANIM');
         setTimeout(() => {
             playAnimation(solutionName, animationName);
         }, 3000);
     } else {
-        // For other solutions, play animation 3 seconds after showing
         const animationName = solutionName.replace('SOL', 'ANIM');
         setTimeout(() => {
             playAnimation(solutionName, animationName);
         }, 3000);
+    }
+}
+
+async function toggleSolutionVisibility(solutionName) {
+    // Execute locally
+    executeSOLLocally(solutionName);
+
+    // Sync to Supabase so other users execute too
+    if (supabaseClient && sessionId) {
+        isLocalSOLAction = true;
+        const { error } = await supabaseClient
+            .from('cascade_session')
+            .update({
+                last_sol_action: solutionName,
+                sol_action_counter: Date.now()
+            })
+            .eq('id', sessionId);
+        if (error) console.error('Error syncing SOL action:', error);
+        else console.log('SOL action synced:', solutionName);
     }
 }
 
@@ -228,7 +241,18 @@ async function releaseControl() {
 
 function handleSessionUpdate(payload) {
     const newData = payload.new;
+    const oldData = payload.old;
     console.log('Session updated:', newData);
+
+    // Handle remote SOL action sync
+    if (newData.sol_action_counter !== oldData.sol_action_counter && newData.last_sol_action) {
+        if (isLocalSOLAction) {
+            isLocalSOLAction = false;
+        } else {
+            console.log('Remote SOL action received:', newData.last_sol_action);
+            executeSOLLocally(newData.last_sol_action);
+        }
+    }
 
     // Update button states based on session state
     if (newData.state === 'idle') {
