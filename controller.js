@@ -4,6 +4,7 @@ let realtimeChannel = null;
 let isController = false;
 let sessionId = null;
 let isLocalSOLAction = false;
+let lastKnownSolCounter = null;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -36,6 +37,7 @@ async function initSupabase() {
     }
 
     sessionId = data.id;
+    lastKnownSolCounter = data.sol_action_counter || 0;
     console.log('Connected to session:', sessionId, '(key:', sessionKey, ')');
     updateStatus('Connected', true);
 
@@ -245,9 +247,11 @@ function handleSessionUpdate(payload) {
     console.log('Session updated:', newData);
 
     // Handle remote SOL action sync
-    if (newData.sol_action_counter !== oldData.sol_action_counter && newData.last_sol_action) {
+    if (newData.last_sol_action && newData.sol_action_counter !== lastKnownSolCounter) {
+        lastKnownSolCounter = newData.sol_action_counter;
         if (isLocalSOLAction) {
             isLocalSOLAction = false;
+            console.log('Local SOL action confirmed:', newData.last_sol_action);
         } else {
             console.log('Remote SOL action received:', newData.last_sol_action);
             executeSOLLocally(newData.last_sol_action);
